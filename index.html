@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Assignment</title>
+</head>
+<body>
+
+<h1>Random Team Assignment</h1>
+
+<form id="team-form">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="group">Group:</label>
+  <select id="group" name="group">
+    <option value="Group 1">Group 1</option>
+    <option value="Group 2">Group 2</option>
+  </select>
+
+  <button type="submit">Submit</button>
+</form>
+
+<h2>Teams</h2>
+<div id="teams"></div>
+
+<script>
+// Replace '[Your Heroku URL]' with the actual Heroku URL where your backend is deployed
+const backendUrl = '[Your Heroku URL]/assign_group';
+
+async function sendToBackend(name, group) {
+  const response = await fetch(backendUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, group })
+  });
+
+  const data = await response.json();
+  return data.teams;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("team-form");
+  const teamsDiv = document.getElementById("teams");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = e.target.elements.name.value;
+    const group = e.target.elements.group.value;
+
+    const teamAssignment = await sendToBackend(name, group);
+    
+    teamsDiv.innerHTML = `<p>Team A: ${teamAssignment["Team A"].join(", ")}</p>`;
+    teamsDiv.innerHTML += `<p>Team B: ${teamAssignment["Team B"].join(", ")}</p>`;
+  });
+});
+</script>
+
+</body>
+</html>
