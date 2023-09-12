@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import random
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -30,4 +31,6 @@ def assign_group():
     return jsonify({"teams": teams})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    # Run the app
+    app.run(host='0.0.0.0', port=port)
