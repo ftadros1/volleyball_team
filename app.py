@@ -6,6 +6,11 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# New root route
+@app.route('/')
+def root():
+    return "The app is running!"
+
 group1 = []
 group2 = []
 teams = {"Fruity Punch": [], "Banana Split": []}
@@ -32,5 +37,4 @@ def assign_group():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    # Run the app
     app.run(host='0.0.0.0', port=port)
