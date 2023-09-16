@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import random
+import os
 
 app = Flask(__name__)
 
@@ -25,4 +26,5 @@ def assign_group():
     return jsonify({'teams': teams})
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
