@@ -1,11 +1,35 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Team Assignment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ffcccc 0%, #ffffcc 100%);
+        }
+        h1, h2 {
+            color: darkred;
+        }
+        .strawberry {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlO9Fje9kgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB+EGHRIVAvrm6EMAAAAKSURBVAjXY2AAAkkB9DMWcQAAFJ0D/P5fT3QAAAAASUVORK5CYII=') center/cover;
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            margin: 5px;
+        }
+        .banana {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlO9Fje9kgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB+EGHRIVAvrm6EMAAAAKSURBVAjXY2BgYPj/HzAbAAcdB9dZ8bHYAAAAAElFTkSuQmCC') center/cover;
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Random Team Assignment</h1>
+<h1>Random Team Assignment <span class="strawberry"></span><span class="banana"></span></h1>
 
 <form id="team-form">
   <label for="name">Name:</label>
@@ -17,10 +41,10 @@
     <option value="Group 2">Group 2</option>
   </select>
 
-  <button type="submit">Submit</button>
+  <button type="submit" style="background-color: red; color: white;">Submit</button>
 </form>
 
-<h2>Teams</h2>
+<h2>Teams <span class="strawberry"></span><span class="banana"></span></h2>
 <div id="teams"></div>
 
 <script>
@@ -51,8 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const teamAssignment = await sendToBackend(name, group);
     
-    teamsDiv.innerHTML = `<p>Team A: ${teamAssignment["Team A"].join(", ")}</p>`;
-    teamsDiv.innerHTML += `<p>Team B: ${teamAssignment["Team B"].join(", ")}</p>`;
+    teamsDiv.innerHTML = `<p>Fruity Punch: ${teamAssignment["Fruity Punch"].join(", ")}</p>`;
+    teamsDiv.innerHTML += `<p>Bannana Split: ${teamAssignment["Bannana Split"].join(", ")}</p>`;
   });
 });
 </script>
