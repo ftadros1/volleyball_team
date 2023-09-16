@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Team Assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,73 +12,82 @@
         h1, h2 {
             color: darkred;
         }
-        .strawberry {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlO9Fje9kgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB+EGHRIVAvrm6EMAAAAKSURBVAjXY2AAAkkB9DMWcQAAFJ0D/P5fT3QAAAAASUVORK5CYII=') center/cover;
-            width: 50px;
-            height: 50px;
-            display: inline-block;
-            margin: 5px;
-        }
-        .banana {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlO9Fje9kgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB+EGHRIVAvrm6EMAAAAKSURBVAjXY2BgYPj/HzAbAAcdB9dZ8bHYAAAAAElFTkSuQmCC') center/cover;
-            width: 50px;
-            height: 50px;
-            display: inline-block;
-            margin: 5px;
+        img {
+            width: 100px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
 
-<h1>Random Team Assignment <span class="strawberry"></span><span class="banana"></span></h1>
+<h1>Random Team Assignment</h1>
+
+<!-- Images -->
+<img src='fruity_punch.jpeg' alt='Fruity Punch' id='fruity-punch-img'>
+<img src='nanan_splot.jpeg' alt='Banana Split' id='banana-split-img'>
 
 <form id="team-form">
   <label for="name">Name:</label>
   <input type="text" id="name" name="name" required>
 
-  <label for="group">Group:</label>
-  <select id="group" name="group">
-    <option value="Group 1">Group 1</option>
-    <option value="Group 2">Group 2</option>
-  </select>
-
   <button type="submit" style="background-color: red; color: white;">Submit</button>
 </form>
 
-<h2>Teams <span class="strawberry"></span><span class="banana"></span></h2>
+<h2>Teams</h2>
 <div id="teams"></div>
 
+<!-- Pie Chart -->
+<h2>Team Distribution</h2>
+<canvas id="myPieChart" width="400" height="400"></canvas>
+
 <script>
-// Replace '[Your Heroku URL]' with the actual Heroku URL where your backend is deployed
 const backendUrl = 'https://volley-ball-ace7abbc77aa.herokuapp.com//assign_group';
 
-async function sendToBackend(name, group) {
-  const response = await fetch(backendUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, group })
-  });
+let myPieChart;
 
-  const data = await response.json();
-  return data.teams;
+async function sendToBackend(name) {
+    const response = await fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name })
+    });
+
+    const data = await response.json();
+    return data.teams;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("team-form");
-  const teamsDiv = document.getElementById("teams");
+    const form = document.getElementById("team-form");
+    const teamsDiv = document.getElementById("teams");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = e.target.elements.name.value;
-    const group = e.target.elements.group.value;
+    // Initialize Pie Chart
+    var ctx = document.getElementById('myPieChart').getContext('2d');
+    myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Fruity Punch', 'Bannana Split'],
+            datasets: [{
+                data: [0, 0],
+                backgroundColor: ['red', 'yellow']
+            }]
+        }
+    });
 
-    const teamAssignment = await sendToBackend(name, group);
-    
-    teamsDiv.innerHTML = `<p>Fruity Punch: ${teamAssignment["Fruity Punch"].join(", ")}</p>`;
-    teamsDiv.innerHTML += `<p>Bannana Split: ${teamAssignment["Bannana Split"].join(", ")}</p>`;
-  });
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = e.target.elements.name.value;
+
+        const teamAssignment = await sendToBackend(name);
+        
+        teamsDiv.innerHTML = `<p>Fruity Punch: ${teamAssignment["Fruity Punch"].join(", ")}</p>`;
+        teamsDiv.innerHTML += `<p>Bannana Split: ${teamAssignment["Bannana Split"].join(", ")}</p>`;
+
+        // Update Pie Chart
+        myPieChart.data.datasets[0].data = [teamAssignment["Fruity Punch"].length, teamAssignment["Bannana Split"].length];
+        myPieChart.update();
+    });
 });
 </script>
 
