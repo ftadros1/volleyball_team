@@ -13,13 +13,13 @@ def root():
 
 group1 = []
 group2 = []
-teams = {"Fruity Punch": [], "Banana Split": []}
+teams = {"Team A": [], "Team B": []}
 
 @app.route('/assign_group', methods=['POST'])
 def assign_group():
     name = request.json.get('name')
     group = request.json.get('group')
-    print('Here')
+    
     if group == "Group 1":
         group1.append(name)
     elif group == "Group 2":
@@ -30,8 +30,8 @@ def assign_group():
     all_names = group1 + group2
     random.shuffle(all_names)
     
-    teams["Fruity Punch"] = all_names[:len(all_names)//2]
-    teams["Banana Split"] = all_names[len(all_names)//2:]
+    teams["Team A"] = all_names[:len(all_names)//2]
+    teams["Team B"] = all_names[len(all_names)//2:]
     
     return jsonify({"teams": teams})
 
