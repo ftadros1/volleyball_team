@@ -19,7 +19,7 @@ teams = {"Fruity Punch": [], "Banana Split": []}
 def assign_group():
     name = request.json.get('name')
     group = request.json.get('group')
-    
+    print('Here')
     if group == "Group 1":
         group1.append(name)
     elif group == "Group 2":
