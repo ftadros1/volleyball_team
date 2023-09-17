@@ -3,24 +3,50 @@
 <html>
 <head>
     <title>Team Assignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(to bottom, #ffcccc 0%, #ffffcc 100%);
+            margin: 0;
+            padding: 0;
         }
         h1, h2 {
             color: darkred;
+            text-align: center;
+            font-size: 1.5em;
         }
         img {
-            width: 100px;
+            max-width: 100%;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label, input, button {
             margin: 10px;
+            max-width: 90%;
+        }
+        #chart-wrapper {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+        canvas {
+            width: 100% !important;
+            max-width: 400px;
+            height: auto !important;
         }
     </style>
 </head>
 <body>
 
-<h1>Random Team Assignment</h1>
+<h1>Volleyball Random Team Assignment</h1>
 
 <!-- Images -->
 <img src='fruity_punch.jpeg' alt='Fruity Punch' id='fruity-punch-img'>
@@ -29,7 +55,6 @@
 <form id="team-form">
   <label for="name">Name:</label>
   <input type="text" id="name" name="name" required>
-
   <button type="submit" style="background-color: red; color: white;">Submit</button>
 </form>
 
@@ -38,7 +63,9 @@
 
 <!-- Pie Chart -->
 <h2>Team Distribution</h2>
-<canvas id="myPieChart" width="400" height="400"></canvas>
+<div id="chart-wrapper">
+  <canvas id="myPieChart"></canvas>
+</div>
 
 <script>
 const backendUrl = 'https://volley-ball-ace7abbc77aa.herokuapp.com//assign_group';
